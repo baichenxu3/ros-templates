@@ -123,6 +123,13 @@ Parameters:
     Label:
       zh-cn: StarRocks的RAM管理员用户
       en: StarRocks Ram Admin User
+  DlfCatalogName:
+    Required: true
+    Type: String
+    Default: 'Dlf_Paimon_lake'
+    Label:
+      zh-cn: 数据湖DLF Catalog 名称
+      en: DLF Catalog User Name
 Resources:
   ECSVPC:
     Type: ALIYUN::ECS::VPC
@@ -310,6 +317,23 @@ Resources:
           Cu: 8
           SpecType: 'standard'
           StoragePerformanceLevel: 'pl1'
+  Catalog:
+    Type: ALIYUN::DlfNext::Catalog
+    Properties:
+      Name:
+        Ref: DlfCatalogName
+      Type: 'Paimon'
+      Options:
+        comment:
+          Ref: DlfCatalogName
+        storage.data.redundancy.type: 'LRS'
+  VpcConfig:
+    Type: ALIYUN::DlfNext::VpcConfig
+    DependsOn:
+      - Catalog
+    Properties:
+      VpcId:
+        Ref: ECSVPC
 Metadata:
   ALIYUN::ROS::Interface:
     Outputs:
@@ -345,11 +369,22 @@ Metadata:
             en: Kafka Configuration
       - Parameters:
           - StarRocksPassword
+        Label:
+          default:
+            zh-cn: EMR Serverless StarRocks 配置
+            en: EMR Serverless StarRocks  Configuration
+      - Parameters:
           - StarRocksRamUserName
         Label:
           default:
-            zh-cn: EMR StarRocks配置
-            en: EMR StarRocks Configuration
+            zh-cn: RAM 配置
+            en: RAM Configuration
+      - Parameters:
+          - DlfCatalogName
+        Label:
+          default:
+            zh-cn: DLF 配置
+            en: DLF Configuration
     TemplateTags:
       - acs:technical-solution:data-analysis:Streaming LakeHouse-tech_solu_286
     Hidden:
