@@ -318,7 +318,7 @@ Resources:
           SpecType: 'standard'
           StoragePerformanceLevel: 'pl1'
   Catalog:
-    Type: ALIYUN::DlfNext::Catalog
+    Type: ALIYUN::DataLakeFormation::Catalog
     Properties:
       Name:
         Ref: DlfCatalogName
@@ -328,7 +328,7 @@ Resources:
           Ref: DlfCatalogName
         storage.data.redundancy.type: 'LRS'
   VpcConfig:
-    Type: ALIYUN::DlfNext::VpcConfig
+    Type: ALIYUN::DataLakeFormation::VpcConfig
     DependsOn:
       - Catalog
     Properties:
